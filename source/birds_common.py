@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw
 
 def for_each_img_and_bb(func, save):
     data_dir = '/home/aditya/data'
-    birds_dir = os.path.join(data_dir, 'birds')
+    birds_dir = os.path.join(data_dir, 'birds/raw')
 
     output_dir = 'output/birds_with_bb'
     assert not os.path.exists(output_dir)
@@ -50,7 +50,7 @@ def for_each_img_and_bb(func, save):
         output_path = os.path.join(output_class_dir, re.sub('\..+', '.png', img_id))
 
         img = Image.open(input_path)
-        func(img, bb)
+        new_img = func(img, bb)
 
-        if save:
-            img.save(output_path, 'png')
+        if new_img:
+            new_img.save(output_path, 'png')

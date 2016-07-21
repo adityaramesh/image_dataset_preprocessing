@@ -79,8 +79,9 @@ def process_img(img, bb):
 
     img = img.crop(box=(x1, y1, x2, y2))
     img = img.resize(size=(dst_size, dst_size), resample=Image.LANCZOS)
+    return img
 
-for_each_img_and_bb(process_img, save=False)
+for_each_img_and_bb(process_img, save=True)
 
 print("Fraction of images skipped: {} / {} ({}%).".format(skipped_count, total_count,
     100 * skipped_count / total_count))
