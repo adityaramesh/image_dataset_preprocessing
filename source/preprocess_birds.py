@@ -82,5 +82,5 @@ def process_img(img, bb):
 
 for_each_img_and_bb(process_img, save=False)
 
-print("Fraction of images skipepd: {} / {} ({}%).".format(skipped_count, total_count,
+print("Fraction of images skipped: {} / {} ({}%).".format(skipped_count, total_count,
     100 * skipped_count / total_count))
