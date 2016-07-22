@@ -1,8 +1,11 @@
 import math
 from cars_common import *
 
+# Grayish.
+mean_color = 'rgb(119,116,114)'
+
 dst_size = 64
-dst_img = Image.new(size=(dst_size, dst_size), mode='RGB', color='black')
+dst_img = Image.new(size=(dst_size, dst_size), mode='RGB', color=mean_color)
 dst_draw = ImageDraw.Draw(dst_img)
 
 def process_img(img, bb):
@@ -18,7 +21,7 @@ def process_img(img, bb):
     x2 = min(x2, img_width - 1)
     y2 = min(y2, img_height - 1)
 
-    dst_draw.rectangle([(0, 0), dst_img.size], fill='black')
+    dst_draw.rectangle([(0, 0), dst_img.size], fill=mean_color)
     img = img.crop(box=(x1, y1, x2, y2))
 
     if w >= h:
