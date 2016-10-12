@@ -9,12 +9,10 @@ src_height = 218
 final_size = 64
 dst_height = math.ceil(src_height * final_size / src_width)
 
-crop_right  = final_size - 1
+crop_right  = final_size
 extra_space = dst_height - final_size
 crop_top    = math.floor(extra_space / 2)
-crop_bottom = crop_top + final_size - 1
-
-assert crop_bottom - crop_top == final_size - 1
+crop_bottom = crop_top + final_size
 
 dst_img  = Image.new(size=(final_size, final_size), mode='RGB')
 dst_draw = ImageDraw.Draw(dst_img)
