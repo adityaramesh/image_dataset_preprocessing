@@ -19,6 +19,7 @@ Order of things to try for IO:
 """
 
 import os
+import struct
 
 img_dir        = 'output/celeb_a_cropped'
 id_file_path   = '/home/aditya/data/celeb_a/identity_CelebA.txt'
@@ -29,8 +30,6 @@ assert os.path.isdir(img_dir)
 assert os.path.isfile(id_file_path)
 assert not os.path.exists(info_file_path)
 assert not os.path.exists(data_file_path)
-
-def entry_from_image_name(name):
 
 def parse_line(line):
     delim_index = line.find(' ')
@@ -51,15 +50,16 @@ data_file = open(data_file_path, 'wb')
 entry_to_id = dict(parse_line(line) for line in open(id_file_path, 'r').read().splitlines())
 entry_count = len(entry_to_id)
 
-# TODO write number of entries to info file
+info_file.write(struct.pack('I', entry_count))
 
-for i, pair in sorted(entry_to_id.items()):
+for i, pair in enumerate(sorted(entry_to_id.items())):
     print("Working on entry {} / {}.".format(i + 1, entry_count))
     entry, id_ = pair
 
-    img_name = str(id_)
+    img_name = str(id_ + 1)
     img_path = '{}/{}.jpg'.format(img_dir, (6 - len(img_name)) * '0' + img_name)
     assert os.path.isfile(img_path)
 
-    # TODO write id_ and JPG data len to info file
-    # TODO write JPG data to data file
+    data = bytearray(open(img_path, 'rb').read())
+    info_file.write(struct.pack('II', id_, len(data)))
+    data_file.write(data)
