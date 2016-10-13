@@ -47,8 +47,9 @@ def parse_line(line):
 info_file = open(info_file_path, 'wb')
 data_file = open(data_file_path, 'wb')
 
-entry_to_id = dict(parse_line(line) for line in open(id_file_path, 'r').read().splitlines())
-entry_count = len(entry_to_id)
+entry_to_id  = dict(parse_line(line) for line in open(id_file_path, 'r').read().splitlines())
+entry_count  = len(entry_to_id)
+opened_paths = set()
 
 info_file.write(struct.pack('I', entry_count))
 
@@ -56,9 +57,12 @@ for i, pair in enumerate(sorted(entry_to_id.items())):
     print("Working on entry {} / {}.".format(i + 1, entry_count))
     entry, id_ = pair
 
-    img_name = str(id_ + 1)
+    img_name = str(entry + 1)
     img_path = '{}/{}.jpg'.format(img_dir, (6 - len(img_name)) * '0' + img_name)
+
     assert os.path.isfile(img_path)
+    assert img_path not in opened_paths
+    opened_paths.add(img_path)
 
     data = bytearray(open(img_path, 'rb').read())
     info_file.write(struct.pack('II', id_, len(data)))
