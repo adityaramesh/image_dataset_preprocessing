@@ -30,7 +30,7 @@ local function parse_info(info_file_path)
 		data_off = data_off + 4
 
 		id_to_entries[id + 1] = id_to_entries[id + 1] or {}
-		table.insert(id_to_entries[id + 1], i + 1)
+		table.insert(id_to_entries[id + 1], i)
 
 		table.insert(entries, {id = id + 1, start = jpg_off, end_ = jpg_off + size - 1})
 		jpg_off = jpg_off + size
@@ -40,15 +40,27 @@ local function parse_info(info_file_path)
 end
 
 local function parse_data(data_file_path)
-	return torch.ByteStorage():string(io.open(data_file_path, 'rb'):read('*all'))
+	return torch.ByteTensor(torch.ByteStorage():string(
+		io.open(data_file_path, 'rb'):read('*all')))
 end
 
-local function save_sample_unconditional_batch(output_dir)
-	--
+local function save_sample_uncond_batch(output_dir, entries, data)
+	for i = 1, 30 do
+		local e = entries[i]
+		local img = image.decompressJPG(data[{{e.start, e.end_}}])
+		local img_path = paths.concat(output_dir, F'{i}.jpg')
+		image.save(img_path, img)
+	end
 end
 
-local function save_sample_conditional_batch(output_dir)
-	--
+local function save_sample_cond_batch(output_dir, entries, id_to_entries, data)
+	for i, id_ in pairs(id_to_entries[20]) do
+		local entry = entries[id_]
+		print(data[{{entry.start, entry.start + 10}}])
+		local img = image.decompressJPG(data[{{entry.start, entry.end_}}])
+		local img_path = paths.concat(output_dir, F'{i}.jpg')
+		image.save(img_path, img)
+	end
 end
 
 local output_dir     = 'output/celeb_a_database_test'
