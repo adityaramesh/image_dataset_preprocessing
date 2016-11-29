@@ -2,7 +2,7 @@ import os
 from PIL import Image
 
 def for_each_img(func):
-    input_img_dir = '/home/aditya/data/celeb_a/img_align_celeba'
+    input_img_dir = '/home/aditya/data/celeb_a/raw/img_align_celeba'
     output_img_dir = 'output/celeb_a_cropped'
 
     assert not os.path.exists(output_img_dir)
@@ -24,4 +24,4 @@ def for_each_img(func):
         new_img = func(img)
 
         if new_img:
-            new_img.save(output_path, 'jpeg')
+            new_img.save(output_path, format='jpeg', subsampling=0, quality=100)

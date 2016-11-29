@@ -22,7 +22,7 @@ import os
 import struct
 
 img_dir        = 'output/celeb_a_cropped'
-id_file_path   = '/home/aditya/data/celeb_a/identity_CelebA.txt'
+id_file_path   = '/home/aditya/data/celeb_a/raw/identity_CelebA.txt'
 info_file_path = 'output/celeb_a_info.bin'
 data_file_path = 'output/celeb_a_data.bin'
 

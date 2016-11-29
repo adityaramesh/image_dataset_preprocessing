@@ -56,7 +56,6 @@ end
 local function save_sample_cond_batch(output_dir, entries, id_to_entries, data)
 	for i, id_ in pairs(id_to_entries[20]) do
 		local entry = entries[id_]
-		print(data[{{entry.start, entry.start + 10}}])
 		local img = image.decompressJPG(data[{{entry.start, entry.end_}}])
 		local img_path = paths.concat(output_dir, F'{i}.jpg')
 		image.save(img_path, img)
@@ -79,6 +78,15 @@ paths.mkdir(cond_dir)
 
 local entries, id_to_entries = parse_info(info_file_path)
 local data = parse_data(data_file_path, info)
+
+local count = 0
+local threshold = 8
+
+for id, entry in pairs(id_to_entries) do
+	if #entry >= threshold then count = count + 1 end
+end
+
+print(F"{count} / {#id_to_entries} entries have more than {threshold} instances.")
 
 print("Saving unconditional batch.")
 save_sample_uncond_batch(uncond_dir, entries, data)
